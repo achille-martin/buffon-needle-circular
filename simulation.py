@@ -173,6 +173,14 @@ class Simulator:
 
         return needle_on_board_arr
 
+    def get_intersect_proba_arr(self):
+        intersect_proba_arr = np.full(self.nb_board, 0.0)
+        for board_index, intersect_arr in enumerate(self.intersection_arr):
+            sum_true = intersect_arr.sum()
+            intersect_proba = sum_true / float(self.nb_needle_per_board)
+            intersect_proba_arr[board_index] = intersect_proba
+        return intersect_proba_arr
+
     def run_simulation(self):
         # Populate the board array depending on board type
         # Populate needle array depending on board type
@@ -204,9 +212,8 @@ class Simulator:
 def main():
     sim_obj = Simulator('circular', 1, 1000000, 'uniform')
     sim_obj.run_simulation()
-    total_intersect = sim_obj.intersection_arr[0].sum()
-    intersect_probab = total_intersect / float(sim_obj.nb_needle_per_board)
-    print("Intersection probability: " + str(intersect_probab))
+    intersect_proba_arr = sim_obj.get_intersect_proba_arr()
+    print("Intersection probability per board: " + str(intersect_proba_arr))
 
 
 if __name__ == "__main__":
